@@ -33,9 +33,7 @@ llm-chatbot/
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
-├── .env.example
-└── assets/
-    └── .gitkeep
+└── .env.example
 ```
 
 ## Prerequisites
@@ -119,22 +117,6 @@ git push -u origin main
 ```
 
 Replace `<repository-url>` with your own GitHub repository URL.
-
-## Deployment on Render
-
-1. Push the project to GitHub.
-2. Create a Render Web Service.
-3. Connect the GitHub repository.
-4. Select a Python runtime.
-5. Set the install command to `pip install -r requirements.txt`.
-6. Set the start command to `python app.py`.
-
-The app uses `server_name="0.0.0.0"` and the `PORT` environment variable supplied by Render.
-
-7. Add `GROQ_API_KEY` as a Render environment variable.
-8. Optionally add `GROQ_MODEL`.
-9. Deploy the service.
-10. Open the generated Render URL.
 
 ## Security
 
