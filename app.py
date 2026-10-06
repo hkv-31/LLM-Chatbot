@@ -543,8 +543,8 @@ def request_model(messages: list[dict[str, str]]) -> str:
 
     response = groq_client.post(
         "/openai/v1/responses",
-        # Return the decoded JSON as-is. The Responses API has fields that
-        # are not represented by the current high-level Groq SDK models.
+        #Return the decoded JSON as-is. The Responses API has fields that
+        #are not represented by the current high-level Groq SDK models.
         cast_to=object,
         body={
             "model": MODEL,
@@ -583,7 +583,7 @@ def send_json(handler: BaseHTTPRequestHandler, payload: dict[str, str], status: 
 class ChatbotHandler(BaseHTTPRequestHandler):
     """Serve the UI and the chat API."""
 
-    def do_GET(self) -> None:  # noqa: N802 - required by BaseHTTPRequestHandler
+    def do_GET(self) -> None:  #noqa: N802 - required by BaseHTTPRequestHandler
         if self.path in {"/", "/index.html"}:
             body = HTML_PAGE.encode("utf-8")
             self.send_response(200)
@@ -594,7 +594,7 @@ class ChatbotHandler(BaseHTTPRequestHandler):
             return
         send_json(self, {"error": "Not found."}, status=404)
 
-    def do_POST(self) -> None:  # noqa: N802 - required by BaseHTTPRequestHandler
+    def do_POST(self) -> None:  #noqa: N802 - required by BaseHTTPRequestHandler
         if self.path != "/api/chat":
             send_json(self, {"error": "Not found."}, status=404)
             return
@@ -635,7 +635,7 @@ class ChatbotHandler(BaseHTTPRequestHandler):
         except groq.APIStatusError as error:
             print(f"Groq API returned HTTP {error.status_code}.")
             send_json(self, {"error": "Groq rejected the request. Check your API key and model settings."}, status=502)
-        except Exception as error:  # Keep provider details out of the browser response.
+        except Exception as error:  #Keep provider details out of the browser response.
             print(f"Chat request failed: {type(error).__name__}")
             send_json(self, {"error": "Sorry, something went wrong while contacting the language model."}, status=502)
 

@@ -1,0 +1,11 @@
+Run,Mode,Query,Input Tokens,Cached Tokens,Uncached Input Tokens,Output Tokens,Total Tokens,Cache Hit,Cache Hit Rate %,Normal Input Cost USD,Cached Input Cost USD,Output Cost USD,Estimated Total Cost USD,Estimated Cost Savings %,Latency Seconds,Response Length,Response Consistent
+1,Baseline,Explain how retrieval-augmented generation works.,1419,0,1419,300,1719,No,0.0,0.00010642,0.0,9e-05,0.00019642,0,1.849,958,
+2,Baseline,Explain how retrieval-augmented generation works.,1419,0,1419,300,1719,No,0.0,0.00010642,0.0,9e-05,0.00019642,0,0.816,888,
+3,Baseline,Explain how retrieval-augmented generation works.,1419,0,1419,300,1719,No,0.0,0.00010642,0.0,9e-05,0.00019642,0,0.917,940,
+4,Baseline,Explain how retrieval-augmented generation works.,1415,0,1415,300,1715,No,0.0,0.00010613,0.0,9e-05,0.00019613,0,1.08,924,
+5,Baseline,Explain how retrieval-augmented generation works.,1419,0,1419,300,1719,No,0.0,0.00010642,0.0,9e-05,0.00019642,0,0.792,924,
+1,Prompt Cached,Explain how retrieval-augmented generation works.,1392,0,1392,300,1692,No,0.0,0.0001044,0.0,9e-05,0.0001944,0.0,10.854,1070,No
+2,Prompt Cached,Explain how retrieval-augmented generation works.,1392,0,1392,300,1692,No,0.0,0.0001044,0.0,9e-05,0.0001944,0.0,10.867,1076,No
+3,Prompt Cached,Explain how retrieval-augmented generation works.,1392,0,1392,300,1692,No,0.0,0.0001044,0.0,9e-05,0.0001944,0.0,11.882,1076,No
+4,Prompt Cached,Explain how retrieval-augmented generation works.,1392,0,1392,300,1692,No,0.0,0.0001044,0.0,9e-05,0.0001944,0.0,10.934,1076,No
+5,Prompt Cached,Explain how retrieval-augmented generation works.,1392,768,624,300,1692,Yes,55.17,4.68e-05,2.842e-05,9e-05,0.00016522,15.01,12.066,1076,No
