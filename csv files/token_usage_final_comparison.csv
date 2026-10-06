@@ -1,0 +1,11 @@
+Query,Before Input,Before Output,Before Total,After Input,After Output,After Total,Savings %
+What is RAG?,100,273,373,100,199,299,19.84
+Explain machine learning to a beginner.,331,783,1114,196,365,561,49.64
+What is the difference between supervised and unsupervised learning?,1082,516,1598,536,196,732,54.19
+Explain APIs with a simple example.,1583,823,2406,630,330,960,60.1
+What are the advantages of Python?,2367,533,2900,616,197,813,71.97
+Explain neural networks simply.,2793,981,3774,581,234,815,78.4
+What is machine learning?,120,158,278,100,140,240,13.67
+What are its main types?,262,379,641,240,184,424,33.85
+Give me an example of each.,618,596,1214,402,175,577,52.47
+Which one is generally used when labelled data is available?,1199,76,1275,430,47,477,62.59

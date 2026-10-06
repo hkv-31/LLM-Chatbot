@@ -1,0 +1,5 @@
+Version,Queries,Total Input Tokens,Total Output Tokens,Total Tokens,Savings vs Baseline %
+Baseline,11,10551,5148,15699,0.0
+System Prompt Optimized,10,5360,2545,7905,49.65
+History Optimized,10,5021,3192,8213,47.68
+Output Optimized,10,3831,2067,5898,62.43

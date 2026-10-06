@@ -1,5 +1,5 @@
 """Single-file web chatbot powered by Groq's Responses API."""
-
+import csv
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -9,16 +9,17 @@ import groq
 from dotenv import load_dotenv
 from groq import Groq
 
-
 load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 DEFAULT_MODEL = "openai/gpt-oss-20b"
 configured_model = os.getenv("GROQ_MODEL", "").strip()
 MODEL = configured_model if configured_model not in {"", "your_model_name_here"} else DEFAULT_MODEL
+CSV_FILE = "token_usage_comparison.csv"
 SYSTEM_INSTRUCTION = (
-    "You are a helpful, concise, and friendly AI assistant. "
-    "Provide accurate and easy-to-understand answers."
+    "You are a concise AI assistant. "
+    "Give accurate, clear, direct answers. "
+    "Keep responses brief and focused."
 )
 
 groq_client = Groq(api_key=API_KEY) if API_KEY else None
@@ -535,38 +536,101 @@ def _extract_output_text(response_data: Any) -> str:
 
     return ""
 
+def log_token_usage(
+    query: str,
+    version: str,
+    input_tokens: int,
+    output_tokens: int,
+    total_tokens: int,
+    quality: str = "",
+) -> None:
+    file_exists = os.path.exists(CSV_FILE)
 
-def request_model(messages: list[dict[str, str]]) -> str:
-    """Send conversation history to Groq's current Responses API."""
+    with open(CSV_FILE, "a", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+
+        if not file_exists:
+            writer.writerow([
+                "Query",
+                "Version",
+                "Input Tokens",
+                "Output Tokens",
+                "Total Tokens",
+                "Quality",
+            ])
+
+        writer.writerow([
+            query,
+            version,
+            input_tokens,
+            output_tokens,
+            total_tokens,
+            quality,
+        ])
+
+def request_model(
+    messages: list[dict[str, str]],
+    query: str,
+    version: str = "Output Optimized", #change for every run
+) -> str:
+    """Send conversation history to Groq and record token usage."""
+
     if groq_client is None:
         raise RuntimeError("missing_api_key")
 
     response = groq_client.post(
         "/openai/v1/responses",
-        # Return the decoded JSON as-is. The Responses API has fields that
-        # are not represented by the current high-level Groq SDK models.
         cast_to=object,
         body={
             "model": MODEL,
             "instructions": SYSTEM_INSTRUCTION,
             "input": messages,
+            "max_output_tokens": 500,
         },
     )
+
     response_text = _extract_output_text(response)
+
     if not response_text:
         raise ValueError("unexpected_response")
+
+    usage = response.get("usage", {})
+
+    input_tokens = usage.get("input_tokens", 0)
+    output_tokens = usage.get("output_tokens", 0)
+    total_tokens = usage.get("total_tokens", 0)
+
+    print("\n--- TOKEN USAGE ---")
+    print(f"Input tokens:  {input_tokens}")
+    print(f"Output tokens: {output_tokens}")
+    print(f"Total tokens:  {total_tokens}")
+    print("-------------------")
+
+    log_token_usage(
+        query=query,
+        version=version,
+        input_tokens=input_tokens,
+        output_tokens=output_tokens,
+        total_tokens=total_tokens,
+    )
+
     return response_text
 
 
 def chat_with_model(message: Any, history: Any) -> str:
-    """Validate input, add the current user turn, and call Groq."""
+    """Validate input, limit conversation history, and call Groq."""
     clean_message = _message_text(message)
     if not clean_message:
         raise ValueError("empty_message")
 
-    messages = convert_history(history)
+    recent_history = history[-4:]
+    messages = convert_history(recent_history)
     messages.append({"role": "user", "content": clean_message})
-    return request_model(messages)
+
+    return request_model(
+        messages,
+        clean_message,
+    )
 
 
 def send_json(handler: BaseHTTPRequestHandler, payload: dict[str, str], status: int = 200) -> None:
