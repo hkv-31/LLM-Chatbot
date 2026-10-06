@@ -25,7 +25,18 @@ LLM Chatbot is a small API-powered conversational chatbot built with Python and 
 - Git/GitHub
 - Render
 
-## Prerequisites
+##Project Structure
+
+```text
+llm-chatbot/
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+└── .env.example
+```
+
+##Prerequisites
 
 You need Python 3.10 or newer, a Groq API key, Git, and an internet connection.
 
