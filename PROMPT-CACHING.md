@@ -87,3 +87,10 @@ Run the experiment:
 Results are automatically saved to:
 
     prompt_cache_results.csv
+
+## References
+
+- https://youtu.be/u57EnkQaUTY?si=pfukNU_7ooYXgk5C
+- https://medium.com/@michael.hannecke prompt-caching-explained-what-it-is-what-it-isnt-and-when-to-use-it-9f5c6fce7bdb
+- https://www.langchain.com/blog/deep-agents-prompt-caching
+- https://ngrok.com/blog/prompt-caching
