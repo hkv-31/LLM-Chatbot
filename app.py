@@ -1,13 +1,17 @@
 """Single-file web chatbot powered by Groq's Responses API."""
 
+import csv
 import json
 import os
+import time
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
 import groq
 from dotenv import load_dotenv
 from groq import Groq
+from cache.redis_cache import RedisCache
 
 
 load_dotenv()
@@ -22,6 +26,8 @@ SYSTEM_INSTRUCTION = (
 )
 
 groq_client = Groq(api_key=API_KEY) if API_KEY else None
+response_cache = RedisCache()
+RESULTS_FILE = "cache_results.csv"
 
 
 HTML_PAGE = r"""<!DOCTYPE html>
@@ -446,7 +452,20 @@ HTML_PAGE = r"""<!DOCTYPE html>
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Request failed");
         assistantBubble.innerHTML = renderMarkdown(data.response);
-        conversationHistory.push({ role: "assistant", content: data.response });
+        const cacheInfo = document.createElement("div");
+        cacheInfo.style.cssText =
+          "margin-top:8px;font-size:.72rem;color:#667085;";
+        cacheInfo.textContent =
+          `Cache ${data.cache_status} · ` +
+          `${Number(data.response_time).toFixed(3)}s · ` +
+          `TTL ${data.ttl}s`;
+
+        assistantBubble.appendChild(cacheInfo);
+
+        conversationHistory.push({
+          role: "assistant",
+          content: data.response
+        });
       } catch (error) {
         assistantBubble.textContent = error.message || "Sorry, something went wrong.";
         conversationHistory.pop();
@@ -558,15 +577,104 @@ def request_model(messages: list[dict[str, str]]) -> str:
     return response_text
 
 
-def chat_with_model(message: Any, history: Any) -> str:
-    """Validate input, add the current user turn, and call Groq."""
+def _record_cache_result(
+    query: str,
+    cache_status: str,
+    response_time: float,
+    ttl: int,
+    cache_key: str,
+) -> None:
+    """Append one cache experiment result to CSV."""
+    exists = os.path.exists(RESULTS_FILE) and os.path.getsize(RESULTS_FILE) > 0
+
+    with open(RESULTS_FILE, "a", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+
+        if not exists:
+            writer.writerow(
+                [
+                    "Timestamp",
+                    "Query",
+                    "Cache Status",
+                    "Response Time (s)",
+                    "TTL (s)",
+                    "Cache Key",
+                    "Model",
+                ]
+            )
+
+        writer.writerow(
+            [
+                datetime.now(timezone.utc).isoformat(),
+                query,
+                cache_status,
+                f"{response_time:.6f}",
+                ttl,
+                cache_key,
+                MODEL,
+            ]
+        )
+
+
+def chat_with_model(message: Any, history: Any) -> tuple[str, str, float, int, str]:
+    """Validate input, check Redis, and call Groq only on a cache miss."""
     clean_message = _message_text(message)
+
     if not clean_message:
         raise ValueError("empty_message")
 
     messages = convert_history(history)
     messages.append({"role": "user", "content": clean_message})
-    return request_model(messages)
+
+    # Create a deterministic key from the complete conversation + model.
+    cache_key = response_cache.make_key(messages, MODEL)
+    print("\n----- CACHE DEBUG -----")
+    print("Key:", cache_key)
+    print("Redis URL:", response_cache.url)
+    print("Exists before GET:", response_cache.exists(cache_key))
+
+    start = time.perf_counter()
+
+    # Check Redis first.
+    cached_response = response_cache.get(cache_key)
+    print("Cached response found:", cached_response is not None)
+
+    if cached_response is not None:
+        elapsed = time.perf_counter() - start
+        ttl = response_cache.ttl(cache_key)
+
+        _record_cache_result(
+            clean_message,
+            "HIT",
+            elapsed,
+            ttl,
+            cache_key,
+        )
+
+        return cached_response, "HIT", elapsed, ttl, cache_key
+
+    # Cache MISS → call the existing Groq implementation.
+    response = request_model(messages)
+
+    # Store the generated response in Redis.
+    response_cache.set(cache_key, response)
+    print("SET executed")
+    print("Exists after SET:", response_cache.exists(cache_key))
+    print("TTL:", response_cache.ttl(cache_key))
+    print("-----------------------")
+
+    elapsed = time.perf_counter() - start
+    ttl = response_cache.ttl(cache_key)
+
+    _record_cache_result(
+        clean_message,
+        "MISS",
+        elapsed,
+        ttl,
+        cache_key,
+    )
+
+    return response, "MISS", elapsed, ttl, cache_key
 
 
 def send_json(handler: BaseHTTPRequestHandler, payload: dict[str, str], status: int = 200) -> None:
@@ -595,53 +703,183 @@ class ChatbotHandler(BaseHTTPRequestHandler):
         send_json(self, {"error": "Not found."}, status=404)
 
     def do_POST(self) -> None:  # noqa: N802 - required by BaseHTTPRequestHandler
-        if self.path != "/api/chat":
-            send_json(self, {"error": "Not found."}, status=404)
-            return
+      if self.path != "/api/chat":
+          send_json(self, {"error": "Not found."}, status=404)
+          return
 
-        try:
-            content_length = int(self.headers.get("Content-Length", "0"))
-            if content_length > 1_000_000:
-                raise ValueError("request_too_large")
-            payload = json.loads(self.rfile.read(content_length))
-            if not isinstance(payload, dict):
-                raise ValueError("invalid_payload")
-            response = chat_with_model(payload.get("message"), payload.get("history"))
-            send_json(self, {"response": response})
-        except ValueError as error:
-            if str(error) == "empty_message":
-                send_json(self, {"error": "Please enter a message before sending."}, status=400)
-            elif str(error) == "request_too_large":
-                send_json(self, {"error": "The request is too large."}, status=413)
-            elif str(error) == "unexpected_response":
-                print("Groq returned an unexpected response format.")
-                send_json(self, {"error": "The language model returned an unexpected response."}, status=502)
-            elif str(error) == "invalid_payload":
-                send_json(self, {"error": "Invalid request."}, status=400)
-            else:
-                detail = str(error)
-                if API_KEY:
-                    detail = detail.replace(API_KEY, "[REDACTED]")
-                print(f"Request processing failed: {type(error).__name__}: {detail[:300]}")
-                send_json(self, {"error": "The request could not be processed."}, status=502)
-        except RuntimeError as error:
-            if str(error) == "missing_api_key":
-                send_json(self, {"error": "API key is not configured. Please set GROQ_API_KEY."}, status=503)
-            else:
-                send_json(self, {"error": "Sorry, something went wrong while contacting the language model."}, status=502)
-        except groq.APIConnectionError:
-            print("Groq connection failed. Check internet, firewall, VPN, or proxy settings.")
-            send_json(self, {"error": "Could not connect to Groq. Check your internet, firewall, VPN, or proxy settings."}, status=502)
-        except groq.APIStatusError as error:
-            print(f"Groq API returned HTTP {error.status_code}.")
-            send_json(self, {"error": "Groq rejected the request. Check your API key and model settings."}, status=502)
-        except Exception as error:  # Keep provider details out of the browser response.
-            print(f"Chat request failed: {type(error).__name__}")
-            send_json(self, {"error": "Sorry, something went wrong while contacting the language model."}, status=502)
+      try:
+          content_length = int(self.headers.get("Content-Length", "0"))
+
+          if content_length > 1_000_000:
+              raise ValueError("request_too_large")
+
+          payload = json.loads(self.rfile.read(content_length))
+
+          if not isinstance(payload, dict):
+              raise ValueError("invalid_payload")
+
+          response, cache_status, response_time, ttl, cache_key = chat_with_model(
+              payload.get("message"),
+              payload.get("history"),
+          )
+
+          send_json(
+              self,
+              {
+                  "response": response,
+                  "cache_status": cache_status,
+                  "response_time": response_time,
+                  "ttl": ttl,
+                  "cache_key": cache_key,
+              },
+          )
+
+      except ValueError as error:
+          if str(error) == "empty_message":
+              send_json(
+                  self,
+                  {"error": "Please enter a message before sending."},
+                  status=400,
+              )
+
+          elif str(error) == "request_too_large":
+              send_json(
+                  self,
+                  {"error": "The request is too large."},
+                  status=413,
+              )
+
+          elif str(error) == "unexpected_response":
+              print("Groq returned an unexpected response format.")
+              send_json(
+                  self,
+                  {"error": "The language model returned an unexpected response."},
+                  status=502,
+              )
+
+          elif str(error) == "invalid_payload":
+              send_json(
+                  self,
+                  {"error": "Invalid request."},
+                  status=400,
+              )
+
+          else:
+              detail = str(error)
+
+              if API_KEY:
+                  detail = detail.replace(API_KEY, "[REDACTED]")
+
+              print(
+                  f"Request processing failed: "
+                  f"{type(error).__name__}: {detail[:300]}"
+              )
+
+              send_json(
+                  self,
+                  {"error": "The request could not be processed."},
+                  status=502,
+              )
+
+      except RuntimeError as error:
+          if str(error) == "missing_api_key":
+              send_json(
+                  self,
+                  {
+                      "error": (
+                          "API key is not configured. "
+                          "Please set GROQ_API_KEY."
+                      )
+                  },
+                  status=503,
+              )
+          else:
+              send_json(
+                  self,
+                  {
+                      "error": (
+                          "Sorry, something went wrong while "
+                          "contacting the language model."
+                      )
+                  },
+                  status=502,
+              )
+
+      except groq.APIConnectionError:
+          print(
+              "Groq connection failed. Check internet, firewall, "
+              "VPN, or proxy settings."
+          )
+          send_json(
+              self,
+              {
+                  "error": (
+                      "Could not connect to Groq. Check your internet, "
+                      "firewall, VPN, or proxy settings."
+                  )
+              },
+              status=502,
+          )
+
+      except groq.APIStatusError as error:
+          print(f"Groq API returned HTTP {error.status_code}.")
+          send_json(
+              self,
+              {
+                  "error": (
+                      "Groq rejected the request. "
+                      "Check your API key and model settings."
+                  )
+              },
+              status=502,
+          )
+
+      except Exception as error:  # Keep provider details out of the browser response.
+          print(f"Chat request failed: {type(error).__name__}")
+          send_json(
+              self,
+              {
+                  "error": (
+                      "Sorry, something went wrong while contacting "
+                      "the language model."
+                  )
+              },
+              status=502,
+          )
 
     def log_message(self, format_string: str, *args: Any) -> None:
         """Keep request logs concise."""
         print(f"{self.address_string()} - {format_string % args}")
+
+    def do_DELETE(self) -> None:  # noqa: N802 - required by BaseHTTPRequestHandler
+      """Delete cached responses."""
+      if self.path == "/api/cache":
+          try:
+              deleted = response_cache.clear()
+              send_json(self, {"deleted": deleted})
+          except Exception:
+              send_json(
+                  self,
+                  {"error": "Could not clear Redis cache."},
+                  status=503,
+              )
+          return
+
+      if self.path.startswith("/api/cache/"):
+          cache_key = self.path[len("/api/cache/"):]
+
+          try:
+              deleted = response_cache.delete(cache_key)
+              send_json(self, {"deleted": deleted})
+          except Exception:
+              send_json(
+                  self,
+                  {"error": "Could not delete cached value."},
+                  status=503,
+              )
+          return
+
+      send_json(self, {"error": "Not found."}, status=404)
 
 
 def run_server() -> None:
