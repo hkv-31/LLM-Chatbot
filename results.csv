@@ -1,0 +1,1 @@
+phase,test_id,attack_type,prompt,http_status,result,security,matched_rules,response,latency_seconds
