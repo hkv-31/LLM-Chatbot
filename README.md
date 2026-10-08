@@ -1,9 +1,12 @@
 # LLM Chatbot
+# LLM Chatbot
 
+## Overview
 ## Overview
 
 LLM Chatbot is a small API-powered conversational chatbot built with Python and the Groq API. It sends the current conversation to Groq's Responses API, displays the generated answer in a clean browser UI, and keeps follow-up questions in context. The HTML, CSS, JavaScript, and Python server are kept together in `app.py` for easy review.
 
+## Features
 ## Features
 
 - Conversational AI
@@ -16,6 +19,7 @@ LLM Chatbot is a small API-powered conversational chatbot built with Python and 
 - Render-ready
 
 ## Tech Stack
+## Tech Stack
 
 - Python 3.10+
 - Groq Python SDK
@@ -25,18 +29,7 @@ LLM Chatbot is a small API-powered conversational chatbot built with Python and 
 - Git/GitHub
 - Render
 
-##Project Structure
-
-```text
-llm-chatbot/
-├── app.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-└── .env.example
-```
-
-##Prerequisites
+## Prerequisites
 
 You need Python 3.10 or newer, a Groq API key, Git, and an internet connection.
 
@@ -96,6 +89,7 @@ python app.py
 Open `http://127.0.0.1:7860` in your browser. The app binds to `0.0.0.0` for hosting and reads `PORT` so it can run on Render.
 
 ## Environment Variables
+## Environment Variables
 
 | Variable | Required | Description |
 | --- | --- | --- |
@@ -103,6 +97,7 @@ Open `http://127.0.0.1:7860` in your browser. The app binds to `0.0.0.0` for hos
 | `GROQ_MODEL` | No | Model name; defaults to `openai/gpt-oss-20b`. |
 | `PORT` | No | Port supplied by Render; defaults locally to `7860`. |
 
+## GitHub Setup
 ## GitHub Setup
 
 After reviewing the files and testing locally:
@@ -119,12 +114,14 @@ git push -u origin main
 Replace `<repository-url>` with your own GitHub repository URL.
 
 ## Security
+## Security
 
 - Never commit `.env`.
 - Never expose API keys in source code.
 - Never upload API keys to GitHub.
 - Use Render environment variables for deployment.
 
+## Example Prompts
 ## Example Prompts
 
 - Explain machine learning in simple terms.
@@ -133,6 +130,7 @@ Replace `<repository-url>` with your own GitHub repository URL.
 - Give me a beginner-friendly explanation of APIs.
 - Write a short study plan for learning Python.
 
+## Future Improvements
 ## Future Improvements
 
 These are ideas for future versions, not implemented features:
@@ -145,6 +143,7 @@ These are ideas for future versions, not implemented features:
 - Authentication
 - RAG/document question answering
 
+## Learning Outcomes
 ## Learning Outcomes
 
 This project demonstrates:
