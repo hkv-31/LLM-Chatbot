@@ -1,0 +1,212 @@
+test_id,prompt,actual_response,result,failure_reason,execution_time_seconds,category,run_timestamp_ist
+T01,Explain machine learning in simple terms.,"**Machine learning is like teaching a computer to learn from experience instead of being told exactly what to do.**
+
+1. **Give it examples** – Show the computer many pictures of cats and dogs, or many emails that are spam or not spam.  
+2. **Let it find patterns** – The computer looks at all those examples and figures out what makes a cat picture different from a dog picture (e.g., shape, color, texture).  
+3. **Make predictions** – Once it has learned those patterns, you can give it a new picture, and it will guess whether it’s a cat or a dog.  
+4. **Improve over time** – If you tell it it was wrong, it adjusts its internal rules and gets better.
+
+So, machine learning is simply a way for computers to learn from data, spot patterns, and make decisions or predictions on new, unseen data.",PASS,,2.599,general,2026-10-10T15:23:26.053626+05:30
+T02,What is the difference between Python lists and tuples?,"**Python lists vs. tuples**
+
+| Feature | List (`[]`) | Tuple (`()`) |
+|---------|-------------|--------------|
+| **Mutability** | *Mutable* – you can change, add, or delete elements after creation. | *Immutable* – once created, the contents cannot be altered. |
+| **Syntax** | Square brackets: `my_list = [1, 2, 3]` | Parentheses (or no delimiters for single‑value tuples): `my_tuple = (1, 2, 3)` or `my_tuple = 1, 2, 3` |
+| **Methods** | Rich API: `append()`, `extend()`, `insert()`, `remove()`, `pop()`, `sort()`, `reverse()`, etc. | Very few methods: only `count()` and `index()`. |
+| **Hashability / Use as dict keys / set elements** | **Not hashable** (mutable → cannot be a key or set element). | **Hashable** if all its elements are hashable → can be a key or set element. |
+| **Memory footprint** | Slightly larger due to dynamic resizing and overhead for mutability. | Smaller; fixed size once created. |
+| **Performance** | Slightly slower for read‑only operations because of the overhead of mutability. | Faster for read‑only access; tuple lookup is a bit quicker. |
+| **Typical use cases** | Collections that need to change: lists of items, building up a result, data that will be modified. | Fixed collections: coordinates, function return values, records that should not change, keys for dictionaries, elements of sets. |
+| **Unpacking / packing** | Can be unpacked, but the result is a new list each time. | Unpacking is common (`x, y, z = my_tuple`). |
+| **Thread safety** | Mutating a list from multiple threads can lead to race conditions. | Immutable tuples are inherently thread‑safe. |
+| **Copying** | `new_list = old_list[:]` or `list(old_list)` creates a shallow copy. | `new_tuple = old_tuple` is just a reference; to copy you need `new_tuple = tuple(old_tuple)` (but usually you don’t need to copy). |
+
+### Quick code comparison
+
+```python
+# List
+l = [1, 2, 3]
+l.append(4)          # OK
+l[0] = 10            # OK
+# l = (1, 2, 3)      # would raise TypeError
+
+# Tuple
+t = (1, 2, 3)
+# t.append(4)        # AttributeError
+# t[0] = 10          # TypeError
+
+# Tuple as dict key
+d = {(1, 2): ""point""}   # works
+# d = {[1, 2]: ""point""} # TypeError: unhashable type: 'list'
+```
+
+### When to choose which
+
+| Scenario | Prefer List | Prefer Tuple |
+|----------|-------------|--------------|
+| You need to modify the collection (add/remove items). | ✔ | ✘ |
+| You want the collection to be hashable (e.g., dictionary key). | ✘ | ✔ |
+| You want a lightweight, read‑only container. | ✘ | ✔ |
+| You’re returning multiple values from a function. | ✔ (but tuple is idiomatic) | ✔ |
+| You’re storing a fixed set of values that should never change. | ✘ | ✔ |
+
+**Bottom line:**  
+Use **lists** when you need a flexible, changeable sequence.  
+Use **tuples** when you need an immutable, hashable sequence that represents a fixed collection of items.",PASS,,2.701,general,2026-10-10T15:23:28.757228+05:30
+T03,Explain neural networks in 3 bullet points.,"- **Layered structure** – A neural network is built from layers of interconnected “neurons” (nodes). Each neuron receives inputs, applies a weighted sum, adds a bias, and passes the result through an activation function to produce an output that feeds the next layer.
+
+- **Learning by error minimization** – During training, the network compares its predictions to the true labels, computes a loss (error), and uses back‑propagation to adjust the weights and biases so that the loss decreases. This iterative process is guided by gradient descent or its variants.
+
+- **Universal function approximation** – With enough hidden units and appropriate training, a neural network can approximate any continuous function (given sufficient data and capacity), enabling it to model complex patterns in images, text, time series, and more.",PASS,,1.338,format,2026-10-10T15:23:30.095959+05:30
+T04,"In one sentence, what is an API?",An API (Application Programming Interface) is a set of rules and protocols that lets different software applications communicate and interact with each other.,PASS,,1.235,concise,2026-10-10T15:23:31.331471+05:30
+T05,Give me exactly 3 tips for learning Python.,"1. **Practice by building small projects** – start with simple scripts (e.g., a calculator or a to‑do list) and gradually add features.  
+2. **Read and write code daily** – study others’ code on GitHub, then write your own, focusing on clear naming and comments.  
+3. **Use interactive tools** – work in a Jupyter notebook or an online REPL to experiment quickly and see immediate results.",PASS,,1.014,format,2026-10-10T15:23:32.346431+05:30
+T06,What is the purpose of a database index?,"A database index is a data structure that lets the database engine find rows faster—much like the index in a book lets you jump straight to the page you need instead of flipping through every page.
+
+### Core purposes
+
+| Purpose | Why it matters |
+|---------|----------------|
+| **Speed up data retrieval** | Indexes allow the database to locate rows that match a query condition (e.g., `WHERE last_name = 'Smith'`) without scanning the entire table. |
+| **Reduce I/O** | By narrowing the search to a small subset of pages, the engine reads fewer disk blocks, which is especially important for large tables. |
+| **Support efficient sorting** | An index can be used to satisfy an `ORDER BY` clause, eliminating the need for an extra sort step. |
+| **Enforce uniqueness** | A unique index guarantees that no two rows have the same key value, which is how primary keys are implemented. |
+| **Enable join performance** | Indexes on foreign‑key columns let the engine quickly match rows between tables. |
+
+### How it works (simplified)
+
+1. **Structure** – Most relational DBMSs use a B‑tree (or B+tree) for indexes. The tree stores key values and pointers to the actual rows (or to the leaf nodes that contain the row data).  
+2. **Lookup** – When a query references the indexed column(s), the engine walks the tree from the root to the leaf that contains the matching key(s).  
+3. **Result** – The leaf nodes give direct pointers to the rows, so the engine can fetch only those rows.
+
+### Trade‑offs
+
+| Benefit | Cost |
+|---------|------|
+| Faster reads | Extra storage space for the index |
+| Faster joins and sorts | Indexes must be updated on `INSERT`, `UPDATE`, and `DELETE`, which can slow write operations |
+| Enforced uniqueness | Requires careful design to avoid over‑indexing (too many indexes can hurt performance) |
+
+### When to use an index
+
+- **Search columns** that appear in `WHERE`, `JOIN`, or `ORDER BY` clauses.  
+- **Primary keys** and **foreign keys** (most DBMSs create indexes automatically).  
+- **Columns used in `GROUP BY`** or as part of an aggregate function.  
+- **Columns that are frequently filtered** or **sorted**.
+
+### When to avoid an index
+
+- **Very small tables** – a full table scan is often faster than maintaining an index.  
+- **Columns with low cardinality** (e.g., a boolean flag) – the index may not provide enough benefit.  
+- **Columns that change frequently** – the overhead of updating the index can outweigh the read benefits.
+
+---
+
+**Bottom line:** A database index is a performance‑enhancing tool that lets the database engine locate, sort, and enforce constraints on data more efficiently, at the cost of extra storage and a bit of write‑time overhead. Choosing the right columns to index—and keeping the index set lean—is key to a well‑tuned database.",PASS,,1.679,general,2026-10-10T15:23:34.025504+05:30
+T07,Explain overfitting in machine learning and name one way to reduce it.,"**Overfitting**  
+In machine learning, overfitting happens when a model learns the training data *too* well—capturing not only the underlying patterns but also the noise, quirks, and idiosyncrasies that are specific to that particular dataset. As a result, the model performs excellently on the training set but poorly on new, unseen data because it has essentially memorized the training examples instead of learning a generalizable rule.
+
+Key signs of overfitting:
+- **High training accuracy / low training error** but **low validation/test accuracy / high validation error**.
+- The model’s complexity (e.g., many layers, high-degree polynomial) far exceeds what is needed to capture the true signal.
+
+**One common way to reduce overfitting: Regularization (e.g., L2 regularization)**  
+Regularization adds a penalty term to the loss function that discourages overly large weights. For L2 (ridge) regularization, the loss becomes:
+
+\[
+\text{Loss}_{\text{total}} = \text{Loss}_{\text{data}} + \lambda \sum_{i} w_i^2
+\]
+
+where \( \lambda \) controls the strength of the penalty. By keeping weights small, the model is forced to learn smoother, more general patterns rather than fitting every noise fluctuation in the training data. Other regularization techniques include L1 (lasso), dropout, and data augmentation, but the principle is the same: penalize complexity to improve generalization.",PASS,,1.214,general,2026-10-10T15:23:35.239985+05:30
+T08,I have a dataset but have not stated its columns or goal. What should you ask me before suggesting a model?,"Before jumping into a model recommendation, it helps to get a clear picture of what you’re trying to achieve and what the data actually looks like. Below is a “starter‑question” list you can use (or adapt) to gather the essential information:
+
+| # | Question | Why it matters |
+|---|----------|----------------|
+| **1. What is the primary objective?** | • Classification, regression, clustering, recommendation, anomaly detection, etc. <br>• Determines the family of models (e.g., tree‑based, neural nets, probabilistic). |
+| **2. What is the target variable (label)?** | • Which column(s) you want to predict or explain. <br>• Helps decide if it’s a single‑output or multi‑output problem. |
+| **3. How many features (columns) are there?** | • Gives a sense of dimensionality and potential feature‑engineering needs. |
+| **4. What are the data types of each feature?** | • Numerical, categorical, ordinal, text, image, time‑series, etc. <br>• Influences preprocessing steps and model choice. |
+| **5. What is the size of the dataset?** | • Number of rows and columns. <br>• Affects feasibility of complex models (e.g., deep learning vs. simpler algorithms). |
+| **6. Are there missing values? If so, how many and where?** | • Determines imputation strategy or whether a model that handles missingness natively is preferable. |
+| **7. Is the target variable imbalanced?** | • Imbalance can bias many algorithms; may need resampling, cost‑sensitive learning, or specialized metrics. |
+| **8. What is the distribution of the target?** | • For regression: range, skewness, outliers. <br>• For classification: class frequencies, multi‑class vs. binary. |
+| **9. What are the evaluation metrics you care about?** | • Accuracy, F1, ROC‑AUC, MAE, RMSE, precision‑recall, etc. <br>• Guides model selection and hyper‑parameter tuning. |
+| **10. Are there any domain constraints?** | • Real‑time inference, memory limits, interpretability requirements, regulatory constraints. |
+| **11. Do you have a train/validation/test split already?** | • If not, how would you like to split the data (random, time‑based, stratified)? |
+| **12. Are there any known feature interactions or domain‑specific rules?** | • Might suggest feature engineering or a model that can capture interactions (e.g., tree‑based, polynomial features). |
+| **13. What is the expected deployment scenario?** | • Batch vs. online, edge device vs. cloud, latency tolerance. |
+| **14. Do you have any prior models or benchmarks?** | • Knowing what has already been tried helps avoid redundant work. |
+| **15. Are there any privacy or security concerns?** | • Data anonymization, differential privacy, secure inference. |
+| **16. What is your level of expertise and available resources?** | • Will you be able to tune hyper‑parameters, run cross‑validation, or need a turnkey solution? |
+| **17. Do you have any constraints on training time or computational budget?** | • Influences choice between simple models (e.g., logistic regression) and heavy ones (e.g., deep nets). |
+| **18. Are there any external data sources you plan to incorporate?** | • Might affect feature engineering or model architecture. |
+| **19. What is the timeline for the project?** | • Tight deadlines may favor simpler, faster‑to‑train models. |
+| **20. Any specific interpretability or explainability needs?** | • SHAP, LIME, rule‑based models, or inherently interpretable models (e.g., decision trees). |
+
+### How to Use These Questions
+
+1. **Collect the answers** – Ideally in a single document or spreadsheet so you can see the whole picture at a glance.
+2. **Prioritize** – Some questions (objective, target, data types) are critical; others (privacy, deployment) may be secondary but still important.
+3. **Iterate** – If you’re unsure about a question, ask follow‑up clarifications. For example, if “data types” is ambiguous, ask for a sample of the raw data or a schema.
+4. **Document assumptions** – If you have to make assumptions (e.g., “I’ll treat all non‑numeric columns as categorical”), note them so they can be revisited later.
+
+Once you have these details, you’ll be in a strong position to recommend a model (or a family of models) that aligns with your data, goals, and constraints. Feel free to share the answers, and I can help narrow down the best approach!",PASS,,2.176,ambiguous,2026-10-10T15:23:37.416379+05:30
+T09,What information would you need to answer a question about a document you have not been given?,"To answer a question about a document that you haven’t actually received, you’d need a handful of key pieces of information.  Think of it as gathering the “ingredients” that let me understand the text, the context, and the specific query you’re after.  Here’s a quick checklist:
+
+| # | What you need | Why it matters | How you can provide it |
+|---|---------------|----------------|------------------------|
+| 1 | **The document itself** (or a faithful excerpt) | I need the actual words to locate facts, quotes, structure, and tone. | Upload the file, paste the text, or give a link to a publicly‑accessible version. |
+| 2 | **The exact question or prompt** | The question tells me what to look for (e.g., “What is the main argument?” vs. “What evidence supports claim X?”). | Type the question verbatim. |
+| 3 | **Contextual background** (e.g., author, publication, date, purpose) | Helps interpret meaning, bias, and relevance. | Provide a brief summary or key facts (author name, publication venue, date, intended audience). |
+| 4 | **Any relevant constraints or focus areas** (e.g., “only consider the first 200 words,” “focus on the legal implications”) | Narrows the scope and ensures the answer stays on target. | Specify any limits or priorities. |
+| 5 | **Your intended use or audience** (e.g., academic paper, casual summary, legal brief) | The tone, depth, and style of the answer can vary. | Mention the purpose or target reader. |
+| 6 | **Any prior knowledge or assumptions** (e.g., “I already know the document is a policy memo”) | Prevents redundant explanations and aligns the answer with your expectations. | Note any pre‑existing insights you have. |
+
+### Why each piece matters
+
+1. **Document content** – Without the text, I can’t pull facts, quotes, or analyze structure.  
+2. **Question** – Determines *what* to look for and *how* to answer.  
+3. **Context** – Provides interpretive lenses (historical, cultural, disciplinary).  
+4. **Constraints** – Keeps the answer focused and efficient.  
+5. **Audience** – Shapes tone, complexity, and formatting.  
+6. **Prior knowledge** – Avoids unnecessary repetition and tailors depth.
+
+### What you can do if you can’t share the whole document
+
+- **Summarize** the relevant sections (e.g., “In paragraph 3, the author states…”) and provide that snippet.  
+- **Quote** key passages that directly relate to the question.  
+- **Describe** the structure (e.g., “The document has an introduction, three main arguments, and a conclusion”).  
+- **Mention** any metadata (title, author, date, source) that might help locate the original.
+
+Once you supply at least the document (or a representative excerpt) and the question, I can give you a precise, well‑contextualized answer. If you’re unsure about any of the items above, just let me know, and I can ask follow‑up questions to fill in the gaps.",PASS,,1.83,rag,2026-10-10T15:23:39.246491+05:30
+T10,Summarize the following text in one sentence: 'Caching stores reusable results so repeated requests can be served faster and may reduce load on the underlying service.',Caching stores reusable results to speed up repeated requests and reduce load on the underlying service.,PASS,,1.208,concise,2026-10-10T15:23:40.454575+05:30
+T11,"Write a JSON object with keys 'name' and 'language', using values 'Ada' and 'Python'. Return only JSON.","{""name"":""Ada"",""language"":""Python""}",PASS,,0.878,format,2026-10-10T15:23:41.332795+05:30
+T12,What is 2 + 2? Answer with only the number.,4,PASS,,0.802,format,2026-10-10T15:23:42.134955+05:30
+T13,  ,[Not sent to model: blank input rejected locally],PASS,,0,invalid,2026-10-10T15:23:42.135331+05:30
+T14,Explain RAG (retrieval-augmented generation) in two sentences.,"Retrieval‑augmented generation (RAG) is a hybrid language‑model approach that first fetches relevant documents or passages from a large external knowledge base and then conditions a generative model on those retrieved snippets to produce a response. By combining up‑to‑date, fine‑grained evidence with powerful neural generation, RAG can answer questions more accurately and with greater factual grounding than a purely generative model.",PASS,,1.066,rag,2026-10-10T15:23:43.201326+05:30
+T15,What should you do if you do not know the answer to a question?,"If you’re faced with a question you can’t answer, the best approach is to be honest, helpful, and proactive. Here’s a quick “playbook” you can follow:
+
+| Step | What to Do | Why It Helps |
+|------|------------|--------------|
+| **1. Acknowledge the gap** | Say something like, “I’m not sure about that.” | Builds trust—people appreciate honesty over guessing. |
+| **2. Offer to find out** | “Let me look into that and get back to you.” | Shows initiative and keeps the conversation moving. |
+| **3. Ask clarifying questions** | “Could you tell me more about…?” | Sometimes the question is vague or ambiguous; clarification can turn it into something you can answer. |
+| **4. Provide related info** | Share what you do know that’s close to the topic. | Even partial knowledge can be useful and keeps the dialogue constructive. |
+| **5. Suggest resources** | Point to a website, book, or expert who can help. | Gives the asker a path forward if you can’t personally provide the answer. |
+| **6. Follow up** | If you promised to research, do so promptly and update the asker. | Demonstrates reliability and respect for their time. |
+
+### Quick Tips
+
+- **Keep it concise** – a brief “I don’t know, but I’ll find out” is often enough.
+- **Use “I” statements** – “I’m not certain” sounds more personal and less like a blanket denial.
+- **Avoid jargon** – if you’re unsure, it’s better to say “I’m not sure” than to use a technical term incorrectly.
+- **Leverage your network** – if you’re in a team or community, ask a colleague or a forum for input.
+
+### Example Dialogue
+
+> **User:** “What’s the best way to optimize this SQL query?”  
+> **You:** “I’m not familiar with the specifics of your schema, but I can look up best practices for query optimization and get back to you. In the meantime, have you considered indexing the columns used in the WHERE clause?”
+
+By following this approach, you maintain credibility, keep the conversation productive, and often turn a “don’t know” into a collaborative learning moment.",PASS,,1.086,reliability,2026-10-10T15:23:44.288193+05:30

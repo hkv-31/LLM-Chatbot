@@ -1,0 +1,16 @@
+test_id,prompt,category,expected_keywords,expected_format,checks,max_words,max_response_words,notes
+T01,Explain machine learning in simple terms.,general,machine learning,,non_empty,,250,Valid general question; expect a useful explanation.
+T02,What is the difference between Python lists and tuples?,general,"list,tuple",,non_empty,,250,Should compare both concepts.
+T03,Explain neural networks in 3 bullet points.,format,neural network,bullet,non_empty;keywords;format,,180,Should be concise and use bullet points.
+T04,"In one sentence, what is an API?",concise,API,,non_empty;keywords;max_words,30,30,Should answer in one short sentence.
+T05,Give me exactly 3 tips for learning Python.,format,,numbered_list,non_empty;keywords;format,,150,Should provide three numbered tips.
+T06,What is the purpose of a database index?,general,"database,index",,non_empty;keywords,,220,Should explain why indexes are useful.
+T07,Explain overfitting in machine learning and name one way to reduce it.,general,overfitting,,non_empty;keywords,,220,Should define overfitting and mention a mitigation.
+T08,I have a dataset but have not stated its columns or goal. What should you ask me before suggesting a model?,ambiguous,dataset,,non_empty;keywords,,220,Should ask for clarifying details rather than assume.
+T09,What information would you need to answer a question about a document you have not been given?,rag,document,,non_empty;keywords,,220,Should acknowledge missing source material or ask for it.
+T10,Summarize the following text in one sentence: 'Caching stores reusable results so repeated requests can be served faster and may reduce load on the underlying service.',concise,caching,,non_empty;keywords;max_words,35,35,Should summarize the supplied text briefly.
+T11,"Write a JSON object with keys 'name' and 'language', using values 'Ada' and 'Python'. Return only JSON.",format,"Ada,Python",json,non_empty;keywords;format,,100,Should return a JSON object with the requested keys and values.
+T12,What is 2 + 2? Answer with only the number.,format,4,number_only,non_empty;keywords;format,,10,"Should return only 4, with no explanatory text."
+T13,  ,invalid,,,invalid_input,,100,Blank input should be rejected by the test runner without calling the LLM.
+T14,Explain RAG (retrieval-augmented generation) in two sentences.,rag,retrieval,,non_empty;keywords;max_words,70,70,General RAG concept test; this chatbot does not currently implement RAG.
+T15,What should you do if you do not know the answer to a question?,reliability,,,non_empty;keywords,,220,Should indicate uncertainty or request more information rather than invent facts.
