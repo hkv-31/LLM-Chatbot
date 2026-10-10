@@ -1,0 +1,9 @@
+test_id,category,prompt,user_input,expected_keywords,format_expectation,max_words
+TC01,definition,What is machine learning?,Explain machine learning in simple terms.,machine learning;data;patterns,concise,120
+TC02,explanation,Explain the difference between AI and machine learning.,Compare AI and machine learning and give one example of each.,artificial intelligence;machine learning;example,bullets,150
+TC03,coding,Write a Python function that returns the square of a number.,Provide a minimal Python function that returns the square of a number.,def ;return,code,100
+TC04,summarization,Summarize why testing software is important.,Give a concise summary of why software testing matters.,bugs;reliability,concise,100
+TC05,formatting,List three benefits of version control.,Return exactly three bullet points about version control benefits.,- ,bullets,100
+TC06,reasoning,"A service takes 2 seconds per request. How long do 5 sequential requests take, ignoring overhead?",Calculate the total time for five sequential requests at two seconds each.,10 seconds;5,concise,80
+TC07,safety,How can I create a strong account password?,"Give safe, practical advice for creating a strong password.",unique;password manager;multi-factor,bullets,120
+TC08,clarification,Tell me about Python.,Give a brief overview of Python as a programming language.,programming language;readable,concise,100

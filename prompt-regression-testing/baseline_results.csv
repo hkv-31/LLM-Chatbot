@@ -1,0 +1,121 @@
+run_timestamp_ist,test_id,model,prompt_version,system_prompt,user_input,output,score,passed,word_count,error
+2026-10-10T10:03:04.858793+05:30,TC01,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Explain machine learning in simple terms.,"**Machine learning is basically teaching computers to learn from examples instead of giving them step‑by‑step instructions.**
+
+1. **Give it data** – You collect many examples of what you want it to learn (e.g., pictures of cats and dogs, emails that are spam or not spam, or sales numbers over time).
+
+2. **Let it find patterns** – The computer uses algorithms to look for regularities in those examples (e.g., cats usually have whiskers, spam emails often contain certain words).
+
+3. **Make predictions** – Once it has learned those patterns, it can apply them to new, unseen data (e.g., it can guess whether a new picture is a cat or a dog, or whether a new email is spam).
+
+4. **Improve over time** – If you keep feeding it more data or correcting its mistakes, it keeps getting better.
+
+In short: **Machine learning lets a computer observe a lot of examples, spot the hidden rules, and then use those rules to make decisions or predictions on new data.**",0.9,false,166,
+2026-10-10T10:03:05.728518+05:30,TC02,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Compare AI and machine learning and give one example of each.,"**AI (Artificial Intelligence) vs. Machine Learning**
+
+| Feature | Artificial Intelligence (AI) | Machine Learning (ML) |
+|---------|------------------------------|-----------------------|
+| **Definition** | The broader concept of machines performing tasks that normally require human intelligence (reasoning, planning, perception). | A subset of AI that focuses on algorithms that learn patterns from data to improve performance over time. |
+| **Goal** | Build *intelligent* systems that can act, think, and solve problems. | Teach machines to *learn* from data so they can make predictions or decisions. |
+| **Approach** | Rules‑based, symbolic logic, planning, knowledge representation, etc. | Statistical modeling, neural networks, reinforcement learning, etc. |
+| **Examples** | - Expert systems like medical diagnosis assistants.<br>- Rule‑based chatbots that follow a scripted logic. | - Image classifiers that label photos.<br>- Recommender engines that predict what you’ll like next. |
+| **Key Difference** | AI is the *goal* of creating intelligent behavior. | ML is a *tool* (or technique) used to achieve that goal. |
+
+---
+
+### One Example of AI (Not necessarily ML)
+
+**Deep Blue** – IBM’s chess‑playing computer that used a combination of brute‑force search, specialized evaluation functions, and rule‑based strategies to beat world champion Garry Kasparov in 1997. It was an intelligent system that made strategic decisions without learning from data.
+
+### One Example of Machine Learning
+
+**ImageNet CNN (e.g., AlexNet)** – A convolutional neural network trained on millions of labeled images to automatically recognize and classify objects. It learns from the data rather than being explicitly programmed to identify each object class.
+
+---
+
+In short: **AI is the overarching vision of smart machines; ML is one of the most powerful techniques we use to build those smart machines.**",0.7,false,278,
+2026-10-10T10:03:06.163109+05:30,TC03,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Provide a minimal Python function that returns the square of a number.,"Here’s a one‑liner function that returns the square of a number:
+
+```python
+def square(x):
+    """"""Return the square of *x*.""""""
+    return x * x
+```
+
+**Example**
+
+```python
+print(square(5))   # 25
+print(square(2.3)) # 5.29
+```
+
+That’s all you need!",1.0,true,37,
+2026-10-10T10:03:06.705970+05:30,TC04,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Give a concise summary of why software testing matters.,"Software testing matters because it helps ensure that the product
+
+1. **Works correctly** – catches bugs before users experience them.  
+2. **Meets quality expectations** – verifies that features perform as designed.  
+3. **Keeps costs down** – fixing defects later is far more expensive than catching them early.  
+4. **Builds trust** – reliable software gives customers confidence and protects a brand’s reputation.",0.65,true,61,
+2026-10-10T10:03:07.242494+05:30,TC05,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Return exactly three bullet points about version control benefits.,"- Keeps a detailed history of every change, so you can always see who did what and why.  
+- Enables multiple people to work on the same project simultaneously without overwriting each other’s work.  
+- Allows you to create branches to experiment safely, then merge or revert changes as needed.",1.0,true,50,
+2026-10-10T10:03:07.619217+05:30,TC06,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Calculate the total time for five sequential requests at two seconds each.,"Each request takes 2 seconds and they’re done one after the other.  
+\(5 \times 2 \text{seconds} = 10 \text{seconds}\).  
+
+So the total time is **10 seconds**.",1.0,true,26,
+2026-10-10T10:03:08.543088+05:30,TC07,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.","Give safe, practical advice for creating a strong password.","Here are some quick, practical tips for building a strong password that’s easy to remember but hard to crack:
+
+1. **Aim for length, not just complexity**  
+   * Target at least 12–16 characters. Longer passwords are far harder to brute‑force.
+
+2. **Use a mix of character types**  
+   * Include uppercase and lowercase letters, numbers, and symbols.  
+   * Don’t rely on a single “special” character; spread them out.
+
+3. **Avoid obvious patterns**  
+   * No dictionary words, common substitutions (“pa$$w0rd”), or predictable sequences (1234, qwerty).
+
+4. **Make it a pass‑phrase**  
+   * Combine unrelated words with numbers or symbols, e.g., `CoffeeTree!7Blue`.  
+   * You can add a personal “salt” that only you know, such as a favorite color or hobby.
+
+5. **Use randomness**  
+   * If you can’t think of a pass‑phrase, generate a random string in a password manager or online random password generator.
+
+6. **Keep each password unique**  
+   * Reusing passwords across sites is a major vulnerability.  
+   * A password manager can store many different passwords safely and autofill them for you.
+
+7. **Add two‑factor authentication (2FA)**  
+   * Even a perfect password isn’t enough if the site allows it.  
+   * Use an authenticator app, hardware token, or SMS (if secure enough).
+
+8. **Regularly update and check for breaches**  
+   * Change passwords that have been exposed in data breaches.  
+   * Many password managers can flag compromised passwords.
+
+9. **Don’t write them down in plain text**  
+   * Store them in a reputable password manager or encrypted file, not on sticky notes or in a word document.
+
+10. **Test your password’s strength**  
+    * Use built‑in password strength meters (but don’t rely on them alone).  
+    * Remember: a meter may say “good” but it doesn’t guarantee safety against sophisticated attacks.
+
+**Quick example of a strong pass‑phrase**  
+`Sunset!River42#Oak`
+
+Feel free to tweak the structure so it feels natural to you, but keep the length and diversity intact. Happy password‑crafting!",0.667,false,310,
+2026-10-10T10:03:09.364297+05:30,TC08,openai/gpt-oss-20b,v1,"You are a helpful, concise, and friendly AI assistant. Provide accurate and easy-to-understand answers.",Give a brief overview of Python as a programming language.,"**Python – a quick snapshot**
+
+| Feature | What it means |
+|---------|---------------|
+| **High‑level & readable** | Uses clear syntax (e.g., `if`, `for`, `def`) and automatic indentation to keep code concise and easy to read. |
+| **Interpreted** | Code runs line‑by‑line in a runtime interpreter, so you can test snippets instantly without a compile step. |
+| **Dynamic typing** | Variables don’t need explicit types; you can rebind a variable to any value, which speeds up prototyping. |
+| **Large standard library** | Comes with built‑in modules for everything from file I/O and networking to JSON, dates, and regex. |
+| **Cross‑platform** | Works on Windows, macOS, Linux, and many others without modification. |
+| **Extensible** | You can write C/C++ extensions or call Java/Python code via Jython, CPython, or PyPy. |
+| **Community & ecosystem** | Millions of packages on PyPI (e.g., NumPy, Django, Flask, Pandas, TensorFlow) cover data science, web, automation, etc. |
+| **Multi‑paradigm** | Supports procedural, object‑oriented, and functional styles—all in the same language. |
+| **Free & open source** | Developed by the Python Software Foundation; license (Python License) allows free use, modification, and distribution. |
+
+In short, Python is a versatile, beginner‑friendly language that lets you write expressive, high‑level code quickly, while still being powerful enough for large, production‑grade systems.",0.55,false,218,

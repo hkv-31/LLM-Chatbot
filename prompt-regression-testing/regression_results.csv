@@ -1,0 +1,155 @@
+run_timestamp_ist,test_id,model,baseline_prompt_version,current_prompt_version,baseline_output,current_output,baseline_score,current_score,baseline_passed,current_passed,score_delta,baseline_word_count,current_word_count,regression_status,failure_reason,error
+2026-10-10T10:03:23.471046+05:30,TC01,openai/gpt-oss-20b,v1,v4,"**Machine learning is basically teaching computers to learn from examples instead of giving them step‑by‑step instructions.**
+
+1. **Give it data** – You collect many examples of what you want it to learn (e.g., pictures of cats and dogs, emails that are spam or not spam, or sales numbers over time).
+
+2. **Let it find patterns** – The computer uses algorithms to look for regularities in those examples (e.g., cats usually have whiskers, spam emails often contain certain words).
+
+3. **Make predictions** – Once it has learned those patterns, it can apply them to new, unseen data (e.g., it can guess whether a new picture is a cat or a dog, or whether a new email is spam).
+
+4. **Improve over time** – If you keep feeding it more data or correcting its mistakes, it keeps getting better.
+
+In short: **Machine learning lets a computer observe a lot of examples, spot the hidden rules, and then use those rules to make decisions or predictions on new data.**","Machine learning is a way for computers to learn from experience instead of being explicitly programmed.  
+* Collect data (examples of what you want).  
+* Use an algorithm to find patterns in that data.  
+* Create a model that captures those patterns.  
+* Use the model to make predictions or decisions on new, unseen data.",0.9,1.0,false,true,0.1,166,55,BASELINE_FAILURE,Test already failed in baseline,
+2026-10-10T10:03:24.044170+05:30,TC02,openai/gpt-oss-20b,v1,v4,"**AI (Artificial Intelligence) vs. Machine Learning**
+
+| Feature | Artificial Intelligence (AI) | Machine Learning (ML) |
+|---------|------------------------------|-----------------------|
+| **Definition** | The broader concept of machines performing tasks that normally require human intelligence (reasoning, planning, perception). | A subset of AI that focuses on algorithms that learn patterns from data to improve performance over time. |
+| **Goal** | Build *intelligent* systems that can act, think, and solve problems. | Teach machines to *learn* from data so they can make predictions or decisions. |
+| **Approach** | Rules‑based, symbolic logic, planning, knowledge representation, etc. | Statistical modeling, neural networks, reinforcement learning, etc. |
+| **Examples** | - Expert systems like medical diagnosis assistants.<br>- Rule‑based chatbots that follow a scripted logic. | - Image classifiers that label photos.<br>- Recommender engines that predict what you’ll like next. |
+| **Key Difference** | AI is the *goal* of creating intelligent behavior. | ML is a *tool* (or technique) used to achieve that goal. |
+
+---
+
+### One Example of AI (Not necessarily ML)
+
+**Deep Blue** – IBM’s chess‑playing computer that used a combination of brute‑force search, specialized evaluation functions, and rule‑based strategies to beat world champion Garry Kasparov in 1997. It was an intelligent system that made strategic decisions without learning from data.
+
+### One Example of Machine Learning
+
+**ImageNet CNN (e.g., AlexNet)** – A convolutional neural network trained on millions of labeled images to automatically recognize and classify objects. It learns from the data rather than being explicitly programmed to identify each object class.
+
+---
+
+In short: **AI is the overarching vision of smart machines; ML is one of the most powerful techniques we use to build those smart machines.**","**AI vs. Machine Learning**
+
+| AI | Machine Learning |
+|---|---|
+| Broad field that encompasses any technique that allows computers to perform tasks that usually require human intelligence (e.g., reasoning, perception, planning). | Subset of AI that focuses on algorithms which learn from data rather than being explicitly programmed. |
+| Can include rule‑based systems, symbolic logic, expert systems, and more. | Relies on statistical models, training data, and pattern recognition. |
+| Example: A rule‑based chess engine that follows hard‑coded opening strategies. | Example: A neural network trained on labeled images to classify cats vs. dogs. |",0.7,0.567,false,false,-0.133,278,99,REGRESSION,format requirement not met,
+2026-10-10T10:03:24.442093+05:30,TC03,openai/gpt-oss-20b,v1,v4,"Here’s a one‑liner function that returns the square of a number:
+
+```python
+def square(x):
+    """"""Return the square of *x*.""""""
+    return x * x
+```
+
+**Example**
+
+```python
+print(square(5))   # 25
+print(square(2.3)) # 5.29
+```
+
+That’s all you need!","```python
+def square(n):
+    return n * n
+```",1.0,1.0,true,true,0.0,37,8,PASS,No regression detected,
+2026-10-10T10:03:25.104129+05:30,TC04,openai/gpt-oss-20b,v1,v4,"Software testing matters because it helps ensure that the product
+
+1. **Works correctly** – catches bugs before users experience them.  
+2. **Meets quality expectations** – verifies that features perform as designed.  
+3. **Keeps costs down** – fixing defects later is far more expensive than catching them early.  
+4. **Builds trust** – reliable software gives customers confidence and protects a brand’s reputation.","- **Ensures quality and reliability** – Detects defects before users encounter them, leading to more stable software.  
+- **Reduces costs** – Fixing bugs in later stages (or post‑release) is far more expensive than catching them early.  
+- **Improves user satisfaction** – Reliable, bug‑free software builds trust and enhances the user experience.  
+- **Facilitates maintenance** – Well‑tested code is easier to refactor, extend, and debug, supporting long‑term sustainability.  
+- **Supports compliance and safety** – Critical in regulated industries where failures can have legal or life‑threatening consequences.",0.65,1.0,true,true,0.35,61,85,PASS,No regression detected,
+2026-10-10T10:03:25.624955+05:30,TC05,openai/gpt-oss-20b,v1,v4,"- Keeps a detailed history of every change, so you can always see who did what and why.  
+- Enables multiple people to work on the same project simultaneously without overwriting each other’s work.  
+- Allows you to create branches to experiment safely, then merge or revert changes as needed.","- Enables tracking of changes, making it easy to revert to previous states.  
+- Facilitates collaboration by managing concurrent edits and merging conflicts.  
+- Provides a historical record of code evolution, aiding debugging and knowledge sharing.",1.0,1.0,true,true,0.0,50,36,PASS,No regression detected,
+2026-10-10T10:03:26.019062+05:30,TC06,openai/gpt-oss-20b,v1,v4,"Each request takes 2 seconds and they’re done one after the other.  
+\(5 \times 2 \text{seconds} = 10 \text{seconds}\).  
+
+So the total time is **10 seconds**.","Total time = 5 requests × 2 seconds each  
+= **10 seconds**",1.0,1.0,true,true,0.0,26,12,PASS,No regression detected,
+2026-10-10T10:03:26.764016+05:30,TC07,openai/gpt-oss-20b,v1,v4,"Here are some quick, practical tips for building a strong password that’s easy to remember but hard to crack:
+
+1. **Aim for length, not just complexity**  
+   * Target at least 12–16 characters. Longer passwords are far harder to brute‑force.
+
+2. **Use a mix of character types**  
+   * Include uppercase and lowercase letters, numbers, and symbols.  
+   * Don’t rely on a single “special” character; spread them out.
+
+3. **Avoid obvious patterns**  
+   * No dictionary words, common substitutions (“pa$$w0rd”), or predictable sequences (1234, qwerty).
+
+4. **Make it a pass‑phrase**  
+   * Combine unrelated words with numbers or symbols, e.g., `CoffeeTree!7Blue`.  
+   * You can add a personal “salt” that only you know, such as a favorite color or hobby.
+
+5. **Use randomness**  
+   * If you can’t think of a pass‑phrase, generate a random string in a password manager or online random password generator.
+
+6. **Keep each password unique**  
+   * Reusing passwords across sites is a major vulnerability.  
+   * A password manager can store many different passwords safely and autofill them for you.
+
+7. **Add two‑factor authentication (2FA)**  
+   * Even a perfect password isn’t enough if the site allows it.  
+   * Use an authenticator app, hardware token, or SMS (if secure enough).
+
+8. **Regularly update and check for breaches**  
+   * Change passwords that have been exposed in data breaches.  
+   * Many password managers can flag compromised passwords.
+
+9. **Don’t write them down in plain text**  
+   * Store them in a reputable password manager or encrypted file, not on sticky notes or in a word document.
+
+10. **Test your password’s strength**  
+    * Use built‑in password strength meters (but don’t rely on them alone).  
+    * Remember: a meter may say “good” but it doesn’t guarantee safety against sophisticated attacks.
+
+**Quick example of a strong pass‑phrase**  
+`Sunset!River42#Oak`
+
+Feel free to tweak the structure so it feels natural to you, but keep the length and diversity intact. Happy password‑crafting!","- Use a **unique, 12–16+ character password** for each site.  
+- Combine **uppercase, lowercase, numbers, and symbols**; avoid common patterns or dictionary words.  
+- Prefer a memorable **passphrase** (e.g., “CoffeeTable#7!”) built from unrelated words plus symbols/numbers.  
+- Store and generate passwords with a **reputable password manager** to avoid reuse and reduce guesswork.  
+- Enable **multi‑factor authentication (MFA)** everywhere—app‑based or hardware tokens are preferred over SMS.",0.667,0.767,false,true,0.1,310,65,BASELINE_FAILURE,Test already failed in baseline,
+2026-10-10T10:03:27.298606+05:30,TC08,openai/gpt-oss-20b,v1,v4,"**Python – a quick snapshot**
+
+| Feature | What it means |
+|---------|---------------|
+| **High‑level & readable** | Uses clear syntax (e.g., `if`, `for`, `def`) and automatic indentation to keep code concise and easy to read. |
+| **Interpreted** | Code runs line‑by‑line in a runtime interpreter, so you can test snippets instantly without a compile step. |
+| **Dynamic typing** | Variables don’t need explicit types; you can rebind a variable to any value, which speeds up prototyping. |
+| **Large standard library** | Comes with built‑in modules for everything from file I/O and networking to JSON, dates, and regex. |
+| **Cross‑platform** | Works on Windows, macOS, Linux, and many others without modification. |
+| **Extensible** | You can write C/C++ extensions or call Java/Python code via Jython, CPython, or PyPy. |
+| **Community & ecosystem** | Millions of packages on PyPI (e.g., NumPy, Django, Flask, Pandas, TensorFlow) cover data science, web, automation, etc. |
+| **Multi‑paradigm** | Supports procedural, object‑oriented, and functional styles—all in the same language. |
+| **Free & open source** | Developed by the Python Software Foundation; license (Python License) allows free use, modification, and distribution. |
+
+In short, Python is a versatile, beginner‑friendly language that lets you write expressive, high‑level code quickly, while still being powerful enough for large, production‑grade systems.","Python is a high‑level, interpreted language known for its readability and simplicity.  
+Key features:  
+
+- **Dynamic typing & duck typing** – types inferred at runtime.  
+- **Automatic memory management** – garbage collector handles deallocation.  
+- **Extensive standard library** – modules for networking, file I/O, text processing, etc.  
+- **Multi‑paradigm support** – procedural, object‑oriented, functional.  
+- **Cross‑platform** – runs on Windows, macOS, Linux, and many embedded systems.  
+- **Interpreted** – code executed line‑by‑line, enabling rapid development.  
+- **Strong community & ecosystem** – thousands of third‑party packages via PyPI.  
+- **Readable syntax** – uses indentation to delimit blocks, reducing boilerplate.",0.55,0.65,false,true,0.1,218,98,BASELINE_FAILURE,Test already failed in baseline,
